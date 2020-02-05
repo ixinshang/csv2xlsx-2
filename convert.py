@@ -59,12 +59,12 @@ class Convert:
             merge = kwargs['merge']
 
         if convert_file_type == "xlsx":
-            self.write_to_excel(merge)
+            self._write_to_excel(merge)
         else:
             raise Exception("Unsupport Convert Type.")
         return self
 
-    def write_to_excel(self, merge):
+    def _write_to_excel(self, merge):
         from writer.xlsx import XlsxWriter
         if merge == 1:  # 合并数据到一个工作表中
             pass

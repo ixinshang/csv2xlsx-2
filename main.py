@@ -11,8 +11,6 @@ parser.add_option("-m", "--merge", action="store", dest="merge", type="int",
                   default=0, help="合并方式，默认不合并。1合并数据到一个工作表，2合并到同一个文件的多个工作表中")
 options, arg = parser.parse_args()
 
-print(options)
-
 try:
     c = Convert(options.source, options.folder)
     print(c.read().write(merge=options.merge))
