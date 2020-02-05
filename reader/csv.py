@@ -1,6 +1,7 @@
 import csv
 from reader import IReader
 
+
 class CsvReader(IReader):
 
     def load(self):

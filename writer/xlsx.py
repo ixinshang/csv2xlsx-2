@@ -1,8 +1,8 @@
 from writer import IWriter
 from openpyxl import Workbook
 
-class XlsxWriter(IWriter):
 
+class XlsxWriter(IWriter):
     suffix = ".xlsx"
 
     def __init__(self, filename=''):
