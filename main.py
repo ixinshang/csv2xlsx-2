@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 from optparse import OptionParser
 from convert import Convert
+import traceback
 
 parser = OptionParser("./main.py -s t.csv")
 parser.add_option("-f", "--folder", action="store", dest="folder", type="string",
@@ -14,7 +15,7 @@ parser.add_option("-d", "--destination", action="store", dest="dest", type="stri
 options, arg = parser.parse_args()
 
 try:
-    c = Convert(options.source, options.folder)
-    print(c.read().write(merge=options.merge, dest=options.dest))
-except Exception as e:
-    print(e)
+    c = Convert(options.source, folder=options.folder, merge=options.merge, dest=options.dest)
+    print(c.read().write())
+except:
+    print(traceback.format_exc())
