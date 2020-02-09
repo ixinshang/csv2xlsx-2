@@ -19,17 +19,18 @@ class Convert:
         return msg
 
     def _init(self, source, **kwargs):
-        sources = []
         if "dest" in kwargs and kwargs["dest"] != "":
             self.dest = kwargs["dest"]
         if "merge" in kwargs and kwargs['merge'] > 0:
             self.merge = kwargs["merge"]
+
+        folder = ""
         if "folder" in kwargs:
             folder = kwargs['folder']
-        else:
-            folder = ""
         folder = folder.rstrip("/")
+
         default_source_file = folder + "/" + source.lstrip("/") if folder != "" else source
+        sources = []
         if os.path.exists(default_source_file):
             sources.append(default_source_file)
         elif "," in source:
@@ -78,7 +79,7 @@ class Convert:
             print("---------------------------------------------")
         return self
 
-    def write(self, **kwargs):
+    def write(self):
         if self.debug:
             print("Result:")
         self._write_to_excel()
