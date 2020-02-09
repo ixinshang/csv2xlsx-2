@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 from optparse import OptionParser
-from convert import Convert
+from csv2xlsx import convert
 import traceback
 
 parser = OptionParser("./main.py -s t.csv")
@@ -15,7 +15,7 @@ parser.add_option("-d", "--destination", action="store", dest="dest", type="stri
 options, arg = parser.parse_args()
 
 try:
-    c = Convert(options.source, folder=options.folder, merge=options.merge, dest=options.dest)
+    c = convert(options.source, folder=options.folder, merge=options.merge, dest=options.dest)
     print(c.read().write())
 except:
     print(traceback.format_exc())

@@ -1,7 +1,7 @@
 import os
 from writer.xlsx import XlsxWriter
 
-class Convert:
+class convert:
 
     def __init__(self, source, **kwargs):
         self.source = []
