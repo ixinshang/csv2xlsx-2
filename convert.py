@@ -57,14 +57,16 @@ class Convert:
         merge = 0
         if "merge" in kwargs:
             merge = kwargs['merge']
-
+        filename = ""
+        if "dest" in kwargs and kwargs['dest'] != '':
+            filename = kwargs['dest']
         if convert_file_type == "xlsx":
-            self._write_to_excel(merge)
+            self._write_to_excel(merge, filename)
         else:
             raise Exception("Unsupport Convert Type.")
         return self
 
-    def _write_to_excel(self, merge):
+    def _write_to_excel(self, merge, dest_filename):
         from writer.xlsx import XlsxWriter
         if merge == 1:  # 合并数据到一个工作表中
             filename = ''
@@ -75,6 +77,8 @@ class Convert:
                 if filename == "":
                     filename = row['source'] + ".m"
                 data.extend(row['data'])
+            if dest_filename != "":
+                filename = dest_filename
             xw = XlsxWriter(filename)
             xw.write(data)
             for row in self.data:
@@ -94,6 +98,8 @@ class Convert:
                     "title": os.path.basename(row['source']).lower(),
                     "data": row['data']
                 })
+            if dest_filename != "":
+                filename = dest_filename
             xw = XlsxWriter(filename)  
             xw.write_multi(data)
             for row in self.data:
@@ -102,10 +108,14 @@ class Convert:
                 row['write'] = True
                 row['dest'] = xw.filename
         else:  # 不合并，导出为多个文件
+            cnt = len(self.data)
             for row in self.data:
                 if not row['read']:
                     continue
-                xw = XlsxWriter(row['source'])
+                if cnt == 1 and dest_filename != "":
+                    xw = XlsxWriter(dest_filename)
+                else:
+                    xw = XlsxWriter(row['source'])
                 xw.write(row['data'])
                 row['write'] = True
                 row['dest'] = xw.filename
