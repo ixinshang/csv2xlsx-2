@@ -67,7 +67,21 @@ class Convert:
     def _write_to_excel(self, merge):
         from writer.xlsx import XlsxWriter
         if merge == 1:  # 合并数据到一个工作表中
-            pass
+            filename = ''
+            data = []
+            for row in self.data:
+                if not row['read']:
+                    continue
+                if filename == "":
+                    filename = row['source'] + ".m"
+                data.extend(row['data'])
+            xw = XlsxWriter(filename)
+            xw.write(data)
+            for row in self.data:
+                if not row['read']:
+                    continue
+                row['write'] = True
+                row['dest'] = xw.filename
         elif merge == 2:  # 合并到一个文件的多个工作表中
             pass
         else:  # 不合并，导出为多个文件
