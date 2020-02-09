@@ -9,7 +9,7 @@ class Convert:
         self.dest = ""
         self.merge = 0
         self.debug = True
-        self._init_param(source, **kwargs)
+        self._init(source, **kwargs)
 
     def __str__(self):
         msg = ""
@@ -18,7 +18,7 @@ class Convert:
                 "OK" if row['read'] and row['write'] else "Failed") + "\r\n"
         return msg
 
-    def _init_param(self, source, **kwargs):
+    def _init(self, source, **kwargs):
         sources = []
         if "dest" in kwargs and kwargs["dest"] != "":
             self.dest = kwargs["dest"]
@@ -37,6 +37,9 @@ class Convert:
                 sources = [folder + "/" + r.lstrip("/") for r in source.split(",") if os.path.exists(folder + "/" + r.lstrip("/"))]
             else:
                 sources = [r for r in source.split(",") if os.path.exists(r)]
+        elif "*" in source:
+            pass
+
         if len(sources) == 0:
             raise Exception("Unable to load the specified file: %s" % default_source_file)
 
