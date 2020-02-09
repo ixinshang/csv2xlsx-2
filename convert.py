@@ -8,7 +8,15 @@ class Convert:
         self.data = []
         self.dest = ""
         self.merge = 0
+        self.debug = True
         self._init_param(source, **kwargs)
+
+    def __str__(self):
+        msg = ""
+        for row in self.data:
+            msg += row['source'] + " -> " + row['dest'] + "\t" + (
+                "OK" if row['read'] and row['write'] else "Failed") + "\r\n"
+        return msg
 
     def _init_param(self, source, **kwargs):
         sources = []
@@ -33,13 +41,12 @@ class Convert:
             raise Exception("Unable to load the specified file: %s" % default_source_file)
 
         self.source = sources
-
-    def __str__(self):
-        msg = ""
-        for row in self.data:
-            msg += row['source'] + " -> " + row['dest'] + "\t" + (
-                "OK" if row['read'] and row['write'] else "Failed") + "\r\n"
-        return msg
+        if self.debug:
+            print("---------------------------------------------")
+            print("Source File List:")
+            for row in self.source:
+                print(row)
+            print("---------------------------------------------")
 
     def read(self):
         for f in self.source:
@@ -60,9 +67,17 @@ class Convert:
             else:
                 continue
             self.data.append(t)
+        
+        if self.debug:
+            print("Read File Info:")
+            for row in self.data:
+                print(row['source'], row['read'], len(row['data']))
+            print("---------------------------------------------")
         return self
 
     def write(self, **kwargs):
+        if self.debug:
+            print("Result:")
         self._write_to_excel()
         return self
 
